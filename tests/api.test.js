@@ -2,7 +2,7 @@ const request = require('supertest');
 const nock = require('nock');
 const express = require('express');
 const path = require('path');
-const { sampleHtmlWithYale } = require('./test-utils');
+const { sampleHtmlWithYale, replaceYaleWithFale } = require('./test-utils');
 
 // Import app but don't let it listen on a port (we'll use supertest for that)
 // Create a test app with the same route handlers
@@ -33,14 +33,14 @@ testApp.post('/fetch', async (req, res) => {
     }).each(function() {
       // Replace text content but not in URLs or attributes
       const text = $(this).text();
-      const newText = text.replace(/Yale/g, 'Fale').replace(/yale/g, 'fale');
+      const newText = replaceYaleWithFale(text);
       if (text !== newText) {
         $(this).replaceWith(newText);
       }
     });
     
     // Process title separately
-    const title = $('title').text().replace(/Yale/g, 'Fale').replace(/yale/g, 'fale');
+    const title = replaceYaleWithFale($('title').text());
     $('title').text(title);
     
     return res.json({ 

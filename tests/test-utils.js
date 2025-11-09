@@ -44,6 +44,21 @@ const sampleHtmlWithYale = `
 </html>
 `;
 
+// Case-preserving Yale to Fale replacement function
+function replaceYaleWithFale(text) {
+  return text.replace(/Yale/gi, (match) => {
+    if (match === 'YALE') return 'FALE';
+    if (match === 'Yale') return 'Fale';
+    if (match === 'yale') return 'fale';
+    // Handle other cases like YaLe, yALE, etc.
+    if (match === match.toUpperCase()) return 'FALE';
+    if (match === match.toLowerCase()) return 'fale';
+    // Default: capitalize first letter
+    return 'Fale';
+  });
+}
+
 module.exports = {
-  sampleHtmlWithYale
+  sampleHtmlWithYale,
+  replaceYaleWithFale
 };
